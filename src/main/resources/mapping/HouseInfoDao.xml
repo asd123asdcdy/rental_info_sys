@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rental.rental_info_sys.dao.HouseInfoDao">
+
+
+ <resultMap id="houseInfoResultMap" type="HouseInfo">
+  <result property="typeId" column="typeId"/>
+  <association property="houseType" javaType="com.rental.rental_info_sys.domain.HouseType" column="typeId"
+               select="com.rental.rental_info_sys.dao.HouseTypeDao.selectOneHouseTypeById"></association>
+ </resultMap>
+ <select id="selectAllHouseInfo" resultMap="houseInfoResultMap">
+       select houseId,houseDesc,typeId,monthlyRent,publishDate from houseinfo
+ </select>
+
+    <select id="selectOneHouseInfo" parameterType="_int" resultMap="houseInfoResultMap">
+          select houseId,houseDesc,typeId,monthlyRent,publishDate from houseinfo where  houseId=#{houseId}
+    </select>
+
+ <insert id="insertHouseInfo" parameterType="HouseInfo">
+     insert into houseinfo(houseDesc, typeId, monthlyRent) values (#{houseDesc},#{typeId},#{monthlyRent})
+ </insert>
+
+    <update id="updateHouseInfo" parameterType="_int">
+        update houseinfo
+        <trim prefix="set" suffix=" where houseId=#{houseId}" suffixOverrides=",">
+            <if test="houseDesc!=null and houseDesc!=''">
+                houseDesc=#{houseDesc},
+            </if>
+            <if test="typeId!=null and typeId!=0">
+                typeId=#{typeId},
+            </if>
+
+            <if test="monthlyRent != null and monthlyRent !=''">
+                monthlyRent = #{monthlyRent},
+            </if>
+                publishDate=now()
+        </trim>
+    </update>
+
+    <delete id="deleteHouseInfo" parameterType="_int">
+        delete from houseinfo where  houseId=#{houseId}
+    </delete>
+</mapper>

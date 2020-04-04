@@ -1,0 +1,31 @@
+#配置端口
+server:
+  port: 8087
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss # 日期格式
+    time-zone: GMT+8 #时区，默认时区+8表示北京时间
+    default-property-inclusion: non_null #不为null的属性才会序列化
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/propractice?serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+
+mybatis:
+  type-aliases-package: com.rental.rental_info_sys.domain  #配置；类型别名
+  mapper-locations: classpath:mapping/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com.rental.rental_info_sys.dao: debug #配置mapper包输出级别为DEBUG
+  config: classpath:logback-spring.xml #指定自定义日志配置文件
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
